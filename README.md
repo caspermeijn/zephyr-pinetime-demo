@@ -1,25 +1,14 @@
-# Zephyr Example Application
+# Zephyr Pinetime Demo Application
 
-This repository contains a Zephyr example application. The main purpose of this
-repository is to serve as a reference on how to structure Zephyr based
-applications. Some of the features demonstrated in this example are:
+This repository contains a Zephyr application that demos that hardware 
+of the pinetime smartwatch. The main purpose of this application is to 
+demonstrate all the hardware working and as an example for how to use 
+the Zephyr drivers for the hardware.
 
-- Basic application skeleton
-- [Custom boards][board_porting]
-- Custom [devicetree bindings][bindings]
-- Out-of-tree [drivers][drivers]
-- Example CI configuration (using Github Actions)
+This repository refers to the [Zephyr main tree][zephyr], which is the 
+development branch. The goal is to have as much drivers upstreamed, with
+the in-development drivers in this repository. 
 
-This repository is versioned together with the [Zephyr main tree][zephyr]. This
-means that every time that Zephyr is tagged, this repository is tagged as well
-with the same version number, and the [manifest](west.yml) entry for `zephyr`
-will point to the corresponding Zephyr tag. For example, `example-application`
-v2.6.0 will point to Zephyr v2.6.0. Note that the `main` branch will always
-point to the development branch of Zephyr, also `main`.
-
-[board_porting]: https://docs.zephyrproject.org/latest/guides/porting/board_porting.html
-[bindings]: https://docs.zephyrproject.org/latest/guides/dts/bindings.html
-[drivers]: https://docs.zephyrproject.org/latest/reference/drivers/index.html
 [zephyr]: https://github.com/zephyrproject-rtos/zephyr
 
 ## Getting Started
@@ -35,8 +24,8 @@ the ``example-application`` and all Zephyr modules will be cloned. You can do
 that by running:
 
 ```shell
-# initialize my-workspace for the example-application (main branch)
-west init -m https://github.com/zephyrproject-rtos/example-application --mr main my-workspace
+# initialize my-workspace for the zephyr-pinetime-demo (main branch)
+west init -m https://github.com/caspermeijn/zephyr-pinetime-demo --mr main my-workspace
 # update Zephyr modules
 cd my-workspace
 west update
@@ -47,22 +36,15 @@ west update
 The application can be built by running:
 
 ```shell
-west build -b $BOARD -s app
+cd demo-application
+west build -s app
 ```
 
-where `$BOARD` is the target board. The `custom_plank` board found in this
-repository can be used. Note that Zephyr sample boards may be used if an
-appropriate overlay is provided (see `app/boards`).
-
-A sample debug configuration is also provided. You can apply it by running:
+You can start a debug session by running:
 
 ```shell
-west build -b $BOARD -s app -- -DOVERLAY_CONFIG=debug.conf
+west debug --tool-opt=-S
 ```
 
-Note that you may also use it together with `rtt.conf` if using Segger RTT. Once
-you have built the application you can flash it by running:
-
-```shell
-west flash
-```
+This will start GDB. Choose `c` to start the application. 
+The semihosting output is visible on telnet port 4444.
