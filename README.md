@@ -40,11 +40,17 @@ cd demo-application
 west build -s app
 ```
 
-You can start a debug session by running:
-
+Then you can flash the application by running:
 ```shell
+west flash
+```
+
+You can start a debug session by running:
+```shell
+west build -s app -- -DOVERLAY_CONFIG=semihosting.conf
 west debug --tool-opt=-S
 ```
 
-This will start GDB. Choose `c` to start the application. 
+This will build the application with semihosting enabled.
+Then it will start GDB. Choose `c` to start the application. 
 The semihosting output is visible on telnet port 4444.
